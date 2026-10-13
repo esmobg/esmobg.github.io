@@ -39,6 +39,17 @@ Add an entry to `data/projects.json`:
 
 Icons: `access`, `trophy`, `theme`, `radio`, `timer`, `cards`, `calculator`, `code`. Use `"hidden": true` to hide a repository.
 
+## Brand
+
+| | |
+| --- | --- |
+| Logo | `assets/img/logo-full.svg` (monogram + wordmark), `logo-monogram.svg`, `logo-wordmark.svg`. All are vector tracings of the original `brand/logo-original.webp` and use `fill="currentColor"`, so the page sets their colour per theme |
+| Favicon | `assets/img/favicon.svg`: the monogram, brand blue on light, `#8fb0ff` in dark mode |
+| Social image | `assets/img/og-image.png` (1200×630), rendered from `brand/og-image.html` |
+| Brand blue | **#2356EB**: links, buttons and the logo on light backgrounds (5.8:1 on white) |
+| Dark theme accent | **#8FB0FF** (8.8:1 on the dark background); the logo is white |
+| Hero | Gradient from `#0D1B4D` to `#1D3FAE`; the worst-case text contrast over the gradient is 6.98:1 |
+
 ## Preview locally
 
 ```bash

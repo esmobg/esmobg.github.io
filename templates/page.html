@@ -9,13 +9,16 @@
 	<link rel="alternate" hreflang="bg" href="{{url_bg}}">
 	<link rel="alternate" hreflang="en" href="{{url_en}}">
 	<link rel="alternate" hreflang="x-default" href="{{url_bg}}">
-	<meta name="theme-color" content="#13202f">
+	<meta name="theme-color" content="#0d1b4d">
 	<meta property="og:type" content="profile">
 	<meta property="og:locale" content="{{t.og_locale}}">
 	<meta property="og:title" content="{{t.og_title}}">
 	<meta property="og:description" content="{{t.description}}">
 	<meta property="og:url" content="{{url_self}}">
-	<link rel="icon" href="{{base}}assets/img/monogram.svg" type="image/svg+xml">
+	<meta property="og:image" content="https://esmobg.github.io/assets/img/og-image.png">
+	<meta property="og:image:alt" content="Ismail Ismail – WordPress · WCAG 2.2 AA · Open source">
+	<meta name="twitter:card" content="summary_large_image">
+	<link rel="icon" href="{{base}}assets/img/favicon.svg" type="image/svg+xml">
 	<script>
 		/* Apply a saved theme before first paint (shared with the other pages on this domain). */
 		try {
@@ -33,9 +36,9 @@
 
 	<header class="site-header">
 		<div class="container site-header__inner">
-			<a class="brand" href="#top" aria-label="{{t.brand_label}}">
-				<img src="{{base}}assets/img/monogram.svg" alt="" width="36" height="36">
-				<span class="brand__name">{{t.name}}</span>
+			<a class="brand" href="#top">
+				{{logo_full}}
+				<span class="visually-hidden"><span lang="en">Ismail Ismail</span>{{t.brand_suffix}}</span>
 			</a>
 			<nav class="site-nav" aria-label="{{t.nav_label}}">
 				<ul>
@@ -74,7 +77,7 @@
 				</div>
 				<div class="hero__visual hero__visual--profile" aria-hidden="true">
 					<div class="orbit">
-						<img src="{{base}}assets/img/monogram.svg" alt="" width="180" height="180">
+						<div class="orbit__tile">{{logo_monogram}}</div>
 						<span class="orbit__chip orbit__chip--1">WCAG 2.2 AA</span>
 						<span class="orbit__chip orbit__chip--2">WordPress</span>
 						<span class="orbit__chip orbit__chip--3">NVDA · JAWS</span>
@@ -142,7 +145,7 @@
 	<footer class="site-footer">
 		<div class="container site-footer__inner">
 			<div>
-				<p class="brand brand--footer"><img src="{{base}}assets/img/monogram.svg" alt="" width="28" height="28"> {{t.name}}</p>
+				<p class="brand brand--footer">{{logo_full}}<span class="visually-hidden" lang="en">Ismail Ismail</span></p>
 				<p>{{t.footer_updated}} <time datetime="{{updated_iso}}">{{updated}}</time>.</p>
 			</div>
 			<nav aria-label="{{t.footer_nav_label}}">

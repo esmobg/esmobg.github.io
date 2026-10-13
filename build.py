@@ -54,6 +54,13 @@ def icon_svg(name: str, size: int = 26) -> str:
     )
 
 
+def inline_svg(name: str, css_class: str) -> str:
+    """Inline an SVG from assets/img as decorative markup that inherits currentColor."""
+    svg = (ROOT / "assets" / "img" / name).read_text(encoding="utf-8").strip()
+    svg = re.sub(r'\s(role|aria-label)="[^"]*"', "", svg, count=2)
+    return svg.replace("<svg ", f'<svg class="{css_class}" aria-hidden="true" focusable="false" ', 1)
+
+
 def esc(value: object) -> str:
     return html.escape(str(value), quote=True)
 
@@ -240,14 +247,14 @@ NOT_FOUND = """<!doctype html>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{bg_title} / {en_title}</title>
 	<meta name="robots" content="noindex">
-	<link rel="icon" href="/assets/img/monogram.svg" type="image/svg+xml">
+	<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 	<script>try{{var accgTheme=localStorage.getItem('accg-theme');if(accgTheme==='light'||accgTheme==='dark'){{document.documentElement.setAttribute('data-theme',accgTheme);}}}}catch(e){{}}</script>
 	<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
 	<main id="content" class="final-cta not-found">
 		<div class="container container--narrow">
-			<img src="/assets/img/monogram.svg" alt="" width="96" height="96">
+			{logo}
 			<h1>{bg_title} <span lang="en">/ {en_title}</span></h1>
 			<p>{bg_text}</p>
 			<p lang="en">{en_text}</p>
@@ -313,6 +320,8 @@ def main() -> None:
             "projects_featured": "\n\t\t\t\t\t".join(render_card(p, lang, t) for p in projects if p["group"] == "featured"),
             "projects_archive": "\n\t\t\t\t\t".join(render_archive_item(p, lang, t) for p in projects if p["group"] == "archive"),
             "updated": esc(format_date(today, t)),
+            "logo_full": inline_svg("logo-full.svg", "brand__logo"),
+            "logo_monogram": inline_svg("logo-monogram.svg", "orbit__logo"),
             "updated_iso": today,
         }
         target = out / "index.html" if is_bg else out / "en" / "index.html"
@@ -322,6 +331,7 @@ def main() -> None:
     bg, en = translations["bg"], translations["en"]
     (out / "404.html").write_text(
         NOT_FOUND.format(
+            logo=inline_svg("logo-full.svg", "brand__logo brand__logo--large"),
             bg_title=esc(bg["not_found_title"]),
             en_title=esc(en["not_found_title"]),
             bg_text=esc(bg["not_found_text"]),

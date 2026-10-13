@@ -1,0 +1,117 @@
+{
+	"_comment": "Overrides for repositories shown on the site. Keys are GitHub repository names. Repositories without an entry are still shown, using their GitHub description in both languages. Fields: order (lower first), group (featured|archive), hidden, name {bg,en}, description {bg,en}, tags, icon, live {url or {bg,en}}, live_label (live|website), status (archived|empty|small).",
+	"Accessibility-Guardian": {
+		"order": 1,
+		"group": "featured",
+		"icon": "access",
+		"name": { "bg": "Accessibility Guardian", "en": "Accessibility Guardian" },
+		"description": {
+			"bg": "WordPress плъгин, който проверява сайта ви по WCAG 2.2 AA с axe-core направо от админ панела: оценка, подредени проблеми с конкретни поправки, автоматични поправки по избор и експорт в CSV/JSON.",
+			"en": "WordPress plugin that checks your site against WCAG 2.2 AA with axe-core, right in wp-admin: a score, prioritized issues with concrete fixes, optional auto-fixes and CSV/JSON export."
+		},
+		"tags": ["WordPress", "PHP", "JavaScript", "WCAG 2.2"],
+		"live": { "bg": "https://esmobg.github.io/Accessibility-Guardian/bg/", "en": "https://esmobg.github.io/Accessibility-Guardian/" },
+		"live_label": "website"
+	},
+	"scorelive": {
+		"order": 2,
+		"group": "featured",
+		"icon": "trophy",
+		"name": { "bg": "ScoreLive", "en": "ScoreLive" },
+		"description": {
+			"bg": "Платформа с отворен код за турнири: групи, елиминации, лиги и швейцарска система с класиране на живо. На български и английски, с цел ниво на достъпност WCAG AAA.",
+			"en": "Open-source tournament platform: group stages, knockout brackets, leagues and Swiss-system events with live standings. Bulgarian and English, targeting WCAG AAA accessibility."
+		},
+		"tags": ["Next.js", "TypeScript", "Tailwind CSS"],
+		"live": "https://scorelive-app.vercel.app/"
+	},
+	"uspeh-filter-theme": {
+		"order": 3,
+		"group": "featured",
+		"icon": "theme",
+		"name": { "bg": "Uspeh Filter Theme", "en": "Uspeh Filter Theme" },
+		"description": {
+			"bg": "WordPress тема за uspehfilter.com – български производител на въздушни, HEPA, моторни и индустриални филтри. Готова за Gutenberg, със 100 точки в Lighthouse за достъпност, добри практики и SEO.",
+			"en": "Custom WordPress theme for uspehfilter.com, a Bulgarian manufacturer of air, HEPA, engine and industrial filters. Gutenberg-ready, scoring 100 in Lighthouse for accessibility, best practices and SEO."
+		},
+		"tags": ["WordPress", "PHP", "Gutenberg"],
+		"live": "https://uspehfilter.com/",
+		"live_label": "website"
+	},
+	"folkradionazdrave": {
+		"order": 4,
+		"group": "featured",
+		"icon": "radio",
+		"name": { "bg": "Фолк радио Наздраве", "en": "Folk Radio Nazdrave" },
+		"description": {
+			"bg": "Уеб плейър на живо за Фолк радио Наздраве и Gold Radio – попфолк, фолк и балканска музика 24/7 – с панел за достъпност, управление от клавиатурата и автоматични проверки за достъпност.",
+			"en": "Live web player for Folk Radio Nazdrave and Gold Radio – pop-folk, folk and Balkan music 24/7 – with an accessibility panel, keyboard controls and automated accessibility QA."
+		},
+		"tags": ["React", "Vite", "Cloudflare"],
+		"live": "https://folkradionazdrave.com/",
+		"live_label": "website"
+	},
+	"capiland-app": {
+		"order": 5,
+		"group": "featured",
+		"icon": "timer",
+		"name": { "bg": "Kapilands Таймер", "en": "Kapilands Timer" },
+		"description": {
+			"bg": "Windows приложение за играта Kapilands, което следи производство, продажби и строежи и казва в момента, в който нещо е готово. Направено да се ползва изцяло с екранен четец (NVDA или JAWS) и клавиатура.",
+			"en": "Windows app for the browser game Kapilands that tracks production, sales and construction and tells you the moment something is ready. Built to be used entirely with a screen reader (NVDA or JAWS) and the keyboard."
+		},
+		"tags": ["Python", "Windows", "NVDA"]
+	},
+	"acess-tarot": {
+		"order": 6,
+		"group": "featured",
+		"icon": "cards",
+		"name": { "bg": "Достъпно таро", "en": "Accessible Tarot" },
+		"description": {
+			"bg": "Уеб приложение за таро, създадено преди всичко за незрящи и слабовиждащи хора: карта на деня, гадания с една и с три карти, библиотека с всички 78 карти и настройки за достъпност. На български и английски.",
+			"en": "Tarot web app designed first for blind and low-vision users: card of the day, one- and three-card readings, a library of all 78 cards and accessibility settings. In Bulgarian and English."
+		},
+		"tags": ["TypeScript", "JavaScript"]
+	},
+	"euro-to-lev-resto-": {
+		"order": 7,
+		"group": "featured",
+		"icon": "calculator",
+		"name": { "bg": "Калкулатор за ресто BGN/EUR", "en": "BGN/EUR change calculator" },
+		"description": {
+			"bg": "Достъпен калкулатор за ресто и превалутиране между лев и евро по фиксирания курс, с три нива на контраст, пълна поддръжка на клавиатура и оптимизация за екранни четци. На български и английски.",
+			"en": "Accessible calculator for change and conversion between Bulgarian lev and euro at the fixed rate, with three contrast levels, full keyboard support and screen-reader optimisation. In Bulgarian and English."
+		},
+		"tags": ["HTML", "JavaScript"]
+	},
+	"SoftUni": {
+		"order": 20,
+		"group": "archive",
+		"name": { "bg": "SoftUni", "en": "SoftUni" },
+		"description": {
+			"bg": "Упражнения от курсовете в СофтУни.",
+			"en": "Exercises from SoftUni (Software University) courses."
+		},
+		"status": "archived"
+	},
+	"Tarot_mystical_app": {
+		"order": 21,
+		"group": "archive",
+		"name": { "bg": "Tarot Mystical App", "en": "Tarot Mystical App" },
+		"description": {
+			"bg": "Демо на приложение за таро.",
+			"en": "Tarot app demo."
+		},
+		"status": "empty"
+	},
+	"Python_project": {
+		"order": 22,
+		"group": "archive",
+		"name": { "bg": "Python Project", "en": "Python Project" },
+		"description": {
+			"bg": "Учебен проект на Python.",
+			"en": "Python practice project."
+		},
+		"status": "small"
+	}
+}

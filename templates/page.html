@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{t.title}}</title>
+	<meta name="description" content="{{t.description}}">
+	<link rel="canonical" href="{{url_self}}">
+	<link rel="alternate" hreflang="bg" href="{{url_bg}}">
+	<link rel="alternate" hreflang="en" href="{{url_en}}">
+	<link rel="alternate" hreflang="x-default" href="{{url_bg}}">
+	<meta name="theme-color" content="#13202f">
+	<meta property="og:type" content="profile">
+	<meta property="og:locale" content="{{t.og_locale}}">
+	<meta property="og:title" content="{{t.og_title}}">
+	<meta property="og:description" content="{{t.description}}">
+	<meta property="og:url" content="{{url_self}}">
+	<link rel="icon" href="{{base}}assets/img/monogram.svg" type="image/svg+xml">
+	<script>
+		/* Apply a saved theme before first paint (shared with the other pages on this domain). */
+		try {
+			var accgTheme = localStorage.getItem( 'accg-theme' );
+			if ( accgTheme === 'light' || accgTheme === 'dark' ) {
+				document.documentElement.setAttribute( 'data-theme', accgTheme );
+			}
+		} catch ( e ) {}
+	</script>
+	<link rel="stylesheet" href="{{base}}assets/css/site.css">
+	<script src="{{base}}assets/js/site.js" defer></script>
+</head>
+<body>
+	<a class="skip-link" href="#content">{{t.skip}}</a>
+
+	<header class="site-header">
+		<div class="container site-header__inner">
+			<a class="brand" href="#top" aria-label="{{t.brand_label}}">
+				<img src="{{base}}assets/img/monogram.svg" alt="" width="36" height="36">
+				<span class="brand__name">{{t.name}}</span>
+			</a>
+			<nav class="site-nav" aria-label="{{t.nav_label}}">
+				<ul>
+					<li><a href="#projects">{{t.nav_projects}}</a></li>
+					<li><a href="#about">{{t.nav_about}}</a></li>
+					<li><a href="#contact">{{t.nav_contact}}</a></li>
+				</ul>
+			</nav>
+			<div class="header-tools">
+				<nav class="lang-switch" aria-label="{{t.lang_label}}">
+					<ul>
+						<li><a href="{{href_bg}}" lang="bg" hreflang="bg"{{current_bg}}>Български</a></li>
+						<li><a href="{{href_en}}" lang="en" hreflang="en"{{current_en}}>English</a></li>
+					</ul>
+				</nav>
+				<button class="theme-toggle" type="button" aria-pressed="false" hidden>
+					<svg class="theme-toggle__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/></svg>
+					<span>{{t.dark_mode}}</span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main id="content" tabindex="-1">
+		<section class="hero hero--profile" id="top" aria-labelledby="hero-title">
+			<div class="container hero__inner">
+				<div class="hero__copy">
+					<p class="eyebrow">{{t.hero_eyebrow}}</p>
+					<h1 id="hero-title">{{t.hero_hello}} <span class="accent">{{t.name}}.</span></h1>
+					<p class="lead">{{t.hero_lead_html}}</p>
+					<div class="cta">
+						<a class="button button--primary" href="#projects">{{t.cta_projects}}</a>
+						<a class="button button--ghost" href="https://ismailismail.com/">{{t.cta_website}}</a>
+						<a class="button button--ghost" href="https://github.com/esmobg">GitHub</a>
+					</div>
+				</div>
+				<div class="hero__visual hero__visual--profile" aria-hidden="true">
+					<div class="orbit">
+						<img src="{{base}}assets/img/monogram.svg" alt="" width="180" height="180">
+						<span class="orbit__chip orbit__chip--1">WCAG 2.2 AA</span>
+						<span class="orbit__chip orbit__chip--2">WordPress</span>
+						<span class="orbit__chip orbit__chip--3">NVDA · JAWS</span>
+						<span class="orbit__chip orbit__chip--4">{{t.chip_open_source}}</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="strip" aria-label="{{t.stats_label}}">
+			<ul class="container strip__list stats">
+				{{stats}}
+			</ul>
+		</section>
+
+		<section class="section" id="projects" aria-labelledby="projects-title">
+			<div class="container">
+				<p class="eyebrow eyebrow--section">{{t.nav_projects}}</p>
+				<h2 id="projects-title">{{t.projects_title}}</h2>
+				<p class="section__intro">{{t.projects_intro}}</p>
+				<ul class="projects">
+					{{projects_featured}}
+				</ul>
+
+				<h3 class="archive__title" id="archive-title">{{t.archive_title}}</h3>
+				<p class="archive__intro">{{t.archive_intro}}</p>
+				<ul class="archive" aria-labelledby="archive-title">
+					{{projects_archive}}
+				</ul>
+			</div>
+		</section>
+
+		<section class="section section--alt" id="about" aria-labelledby="about-title">
+			<div class="container split split--top">
+				<div>
+					<p class="eyebrow eyebrow--section">{{t.nav_about}}</p>
+					<h2 id="about-title">{{t.about_title}}</h2>
+					<p>{{t.about_p1}}</p>
+					<p>{{t.about_p2}}</p>
+				</div>
+				<div class="requirements">
+					<h3>{{t.focus_title}}</h3>
+					<ul class="checklist">
+						<li>{{t.focus_1}}</li>
+						<li>{{t.focus_2}}</li>
+						<li>{{t.focus_3}}</li>
+						<li>{{t.focus_4}}</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section class="final-cta" id="contact" aria-labelledby="contact-title">
+			<div class="container final-cta__inner">
+				<h2 id="contact-title">{{t.contact_title}}</h2>
+				<p>{{t.contact_text}}</p>
+				<div class="cta cta--center">
+					<a class="button button--primary" href="https://ismailismail.com/">ismailismail.com</a>
+					<a class="button button--ghost" href="https://github.com/esmobg">{{t.contact_github}}</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container site-footer__inner">
+			<div>
+				<p class="brand brand--footer"><img src="{{base}}assets/img/monogram.svg" alt="" width="28" height="28"> {{t.name}}</p>
+				<p>{{t.footer_updated}} <time datetime="{{updated_iso}}">{{updated}}</time>.</p>
+			</div>
+			<nav aria-label="{{t.footer_nav_label}}">
+				<ul>
+					<li><a href="https://ismailismail.com/">ismailismail.com</a></li>
+					<li><a href="https://github.com/esmobg">GitHub</a></li>
+					<li><a href="https://github.com/esmobg/esmobg.github.io">{{t.footer_source}}</a></li>
+				</ul>
+			</nav>
+		</div>
+	</footer>
+</body>
+</html>

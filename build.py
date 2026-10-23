@@ -245,10 +245,12 @@ NOT_FOUND = """<!doctype html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+	<meta name="referrer" content="strict-origin-when-cross-origin">
 	<title>{bg_title} / {en_title}</title>
 	<meta name="robots" content="noindex">
 	<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-	<script>try{{var accgTheme=localStorage.getItem('accg-theme');if(accgTheme==='light'||accgTheme==='dark'){{document.documentElement.setAttribute('data-theme',accgTheme);}}}}catch(e){{}}</script>
+	<script src="/assets/js/theme-init.js"></script>
 	<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
@@ -267,6 +269,68 @@ NOT_FOUND = """<!doctype html>
 </body>
 </html>
 """
+
+
+# The plugin website moved when "Accessibility Guardian" became "Esmo Accessibility Scanner"
+# (repository renamed). GitHub Pages cannot redirect, so its old addresses get small pages that do.
+MOVED_PAGES = {
+    "Accessibility-Guardian": ("en", "https://esmobg.github.io/Esmo-Accessibility-Scanner/"),
+    "Accessibility-Guardian/bg": ("bg", "https://esmobg.github.io/Esmo-Accessibility-Scanner/bg/"),
+}
+
+MOVED = """<!doctype html>
+<html lang="{lang}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+	<meta name="referrer" content="strict-origin-when-cross-origin">
+	<meta http-equiv="refresh" content="0; url={url}">
+	<meta name="robots" content="noindex">
+	<link rel="canonical" href="{url}">
+	<title>{title}</title>
+	<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+	<script src="/assets/js/theme-init.js"></script>
+	<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+	<main id="content" class="final-cta not-found">
+		<div class="container container--narrow">
+			<h1>{title}</h1>
+			<p>{text}</p>
+			<div class="cta cta--center">
+				<a class="button button--primary" href="{url}">{link}</a>
+			</div>
+		</div>
+	</main>
+</body>
+</html>
+"""
+
+MOVED_TEXT = {
+    "en": {
+        "title": "Accessibility Guardian is now Esmo Accessibility Scanner",
+        "text": "The plugin has a new name and its website a new address. You are being taken there now.",
+        "link": "Go to Esmo Accessibility Scanner",
+    },
+    "bg": {
+        "title": "Accessibility Guardian вече е Esmo Accessibility Scanner",
+        "text": "Плъгинът има ново име, а сайтът му – нов адрес. Пренасочваме ви натам.",
+        "link": "Към Esmo Accessibility Scanner",
+    },
+}
+
+
+def write_moved_pages(out: Path) -> None:
+    for path, (lang, url) in MOVED_PAGES.items():
+        target = out / path / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        words = MOVED_TEXT[lang]
+        target.write_text(
+            MOVED.format(lang=lang, url=esc(url), title=esc(words["title"]), text=esc(words["text"]), link=esc(words["link"])),
+            encoding="utf-8",
+            newline="\n",
+        )
 
 
 def main() -> None:
@@ -342,6 +406,7 @@ def main() -> None:
         encoding="utf-8",
         newline="\n",
     )
+    write_moved_pages(out)
     (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}sitemap.xml\n", encoding="utf-8", newline="\n")
     alternates = "".join(
         f'\n\t\t<xhtml:link rel="alternate" hreflang="{lang}" href="{SITE_URL if lang == "bg" else SITE_URL + "en/"}"/>' for lang in LANGS

@@ -3,6 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+	<meta name="referrer" content="strict-origin-when-cross-origin">
 	<title>{{t.title}}</title>
 	<meta name="description" content="{{t.description}}">
 	<link rel="canonical" href="{{url_self}}">
@@ -19,15 +21,7 @@
 	<meta property="og:image:alt" content="Ismail Ismail – WordPress · WCAG 2.2 AA · Open source">
 	<meta name="twitter:card" content="summary_large_image">
 	<link rel="icon" href="{{base}}assets/img/favicon.svg" type="image/svg+xml">
-	<script>
-		/* Apply a saved theme before first paint (shared with the other pages on this domain). */
-		try {
-			var accgTheme = localStorage.getItem( 'accg-theme' );
-			if ( accgTheme === 'light' || accgTheme === 'dark' ) {
-				document.documentElement.setAttribute( 'data-theme', accgTheme );
-			}
-		} catch ( e ) {}
-	</script>
+	<script src="{{base}}assets/js/theme-init.js"></script>
 	<link rel="stylesheet" href="{{base}}assets/css/site.css">
 	<script src="{{base}}assets/js/site.js" defer></script>
 </head>

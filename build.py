@@ -23,6 +23,7 @@ import json
 import os
 import re
 import shutil
+import struct
 import sys
 import urllib.request
 from pathlib import Path
@@ -59,6 +60,14 @@ def inline_svg(name: str, css_class: str) -> str:
     svg = (ROOT / "assets" / "img" / name).read_text(encoding="utf-8").strip()
     svg = re.sub(r'\s(role|aria-label)="[^"]*"', "", svg, count=2)
     return svg.replace("<svg ", f'<svg class="{css_class}" aria-hidden="true" focusable="false" ', 1)
+
+
+def png_size(path: str) -> tuple[int, int]:
+    """Width and height of a PNG in the repository, read from its header."""
+    header = (ROOT / path).read_bytes()[:24]
+    if header[:8] != b"\x89PNG\r\n\x1a\n":
+        sys.exit(f"{path} is not a PNG")
+    return struct.unpack(">II", header[16:24])
 
 
 def esc(value: object) -> str:
@@ -136,6 +145,7 @@ def collect(repos: list[dict], overrides: dict) -> list[dict]:
                 "description": meta.get("description") or {lang: description for lang in LANGS},
                 "tags": list(dict.fromkeys(tags))[:5],
                 "icon": meta.get("icon") or "code",
+                "logo": meta.get("logo") or "",
                 "live": meta.get("live") or (repo.get("homepage") or "").strip(),
                 "live_label": meta.get("live_label", "live"),
                 "status": status,
@@ -180,11 +190,19 @@ def render_card(project: dict, lang: str, t: dict) -> str:
         f'<span class="visually-hidden"> {esc(code_suffix)}</span></a>'
     )
 
+    # A project's own logo replaces the generic icon. PNGs are made for 2x screens.
+    logo = ""
+    icon = f'<span class="project__icon">{icon_svg(project["icon"])}</span>'
+    if project["logo"]:
+        width, height = png_size(project["logo"])
+        logo = f'''
+							<div class="project__logo"><img src="/{esc(project["logo"])}" width="{width // 2}" height="{height // 2}" alt="" loading="lazy"></div>'''
+        icon = ""
+
     return f"""<li>
-						<article class="project" aria-labelledby="project-{slug}">
+						<article class="project" aria-labelledby="project-{slug}">{logo}
 							<div class="project__head">
-								<span class="project__icon">{icon_svg(project["icon"])}</span>
-								<h3 id="project-{slug}"{name_lang}>{esc(name)}</h3>
+								{icon}<h3 id="project-{slug}"{name_lang}>{esc(name)}</h3>
 							</div>
 							<p class="project__desc"{lang_attr(description, lang)}>{esc(description)}</p>
 							<ul class="tags" aria-label="{esc(t["technologies"])}">{tags}</ul>

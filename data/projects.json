@@ -1,9 +1,10 @@
 {
-	"_comment": "Overrides for repositories shown on the site. Keys are GitHub repository names. Repositories without an entry are still shown, using their GitHub description in both languages. Fields: order (lower first), group (featured|archive), hidden, name {bg,en}, description {bg,en}, tags, icon, live {url or {bg,en}}, live_label (live|website), status (archived|empty|small).",
+	"_comment": "Overrides for repositories shown on the site. Keys are GitHub repository names. Repositories without an entry are still shown, using their GitHub description in both languages. Fields: order (lower first), group (featured|archive), hidden, name {bg,en}, description {bg,en}, tags, icon, logo (PNG path made for 2x screens, replaces the icon), live {url or {bg,en}}, live_label (live|website), status (archived|empty|small).",
 	"Esmo-Accessibility-Scanner": {
 		"order": 1,
 		"group": "featured",
 		"icon": "access",
+		"logo": "assets/img/projects/esmo-accessibility-scanner.png",
 		"name": { "bg": "Esmo Accessibility Scanner", "en": "Esmo Accessibility Scanner" },
 		"description": {
 			"bg": "WordPress плъгин (преди Accessibility Guardian), който проверява сайта ви по WCAG 2.2 AA с axe-core направо от админ панела: оценка, подредени проблеми с конкретни поправки, автоматични поправки по избор и експорт в CSV/JSON.",

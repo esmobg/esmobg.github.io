@@ -15,7 +15,7 @@ The page is generated from the GitHub API by a GitHub Action **every day**, so n
 | `build.py` | Fetches the public repositories, merges `data/projects.json`, renders both languages into `_site/` (Python 3.9+, standard library only) |
 | `templates/page.html` | The page template (`{{t.key}}` = translated text, `{{...}}` = generated blocks) |
 | `i18n/bg.json`, `i18n/en.json` | All interface text. Both files must have the same keys (the build checks this) |
-| `data/projects.json` | Per-project overrides: Bulgarian and English names and descriptions, order, group (`featured` or `archive`), tags, icon, live link, status |
+| `data/projects.json` | Per-project overrides: Bulgarian and English names and descriptions, order, group (`featured` or `archive`), tags, icon or logo, live link, status |
 | `assets/` | CSS (same design system as the [Accessibility Guardian website](https://esmobg.github.io/Accessibility-Guardian/)), theme-toggle script, monogram |
 | `.github/workflows/pages.yml` | Builds and deploys on push, daily at 04:17 UTC, and on demand |
 
@@ -37,7 +37,7 @@ Add an entry to `data/projects.json`:
 }
 ```
 
-Icons: `access`, `trophy`, `theme`, `radio`, `timer`, `cards`, `calculator`, `code`. Use `"hidden": true` to hide a repository.
+Icons: `access`, `trophy`, `theme`, `radio`, `timer`, `cards`, `calculator`, `code`. A project with its own logo can use `"logo": "assets/img/projects/<name>.png"` instead: a PNG made for 2x screens, shown on white at half its size in place of the icon. Use `"hidden": true` to hide a repository.
 
 ## Brand
 

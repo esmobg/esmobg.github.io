@@ -1508,6 +1508,24 @@ tbody tr:last-child td {
 	color: var(--accent-soft-text);
 }
 
+/* A project's own logo sits on white, so dark lettering stays legible in dark mode too. */
+.project__logo {
+	display: grid;
+	place-items: center;
+	margin: 0 0 1rem;
+	padding: 1rem;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	background: #ffffff;
+}
+
+.project__logo img {
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 120px;
+}
+
 .project__desc {
 	flex: 1;
 	color: var(--muted);

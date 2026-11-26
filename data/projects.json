@@ -1,10 +1,15 @@
 {
-	"_comment": "Overrides for repositories shown on the site. Keys are GitHub repository names. Repositories without an entry are still shown, using their GitHub description in both languages. Fields: order (lower first), group (featured|archive), hidden, name {bg,en}, description {bg,en}, tags, icon, logo (PNG path made for 2x screens, replaces the icon), live {url or {bg,en}}, live_label (live|website), status (archived|empty|small).",
+	"_comment": "Overrides for repositories shown on the site. Keys are GitHub repository names. Repositories without an entry are still shown, using their GitHub description in both languages. Fields: order (lower first), group (featured|archive), hidden, name {bg,en}, description {bg,en}, tags, icon, image (preview screenshot, 800x500 WebP or PNG, path or {bg,en}; without it a cover is generated), image_alt {bg,en} (required with image), logo (square PNG made for 4x, shown in place of the icon), live {url or {bg,en}}, live_label (live|website), status (archived|empty|small).",
 	"Esmo-Accessibility-Scanner": {
 		"order": 1,
 		"group": "featured",
 		"icon": "access",
-		"logo": "assets/img/projects/esmo-accessibility-scanner.png",
+		"logo": "assets/img/projects/esmo-accessibility-scanner-mark.png",
+		"image": { "bg": "assets/img/projects/esmo-accessibility-scanner-bg.webp", "en": "assets/img/projects/esmo-accessibility-scanner-en.webp" },
+		"image_alt": {
+			"bg": "Началната страница на сайта на плъгина: заглавие „Откривайте и поправяйте проблеми с достъпността направо в админ панела“ и табло с оценка 88.",
+			"en": "The plugin website's home page: the heading “Find and fix accessibility issues, right in wp-admin” and a dashboard with a score of 88 out of 100."
+		},
 		"name": { "bg": "Esmo Accessibility Scanner", "en": "Esmo Accessibility Scanner" },
 		"description": {
 			"bg": "WordPress плъгин (преди Accessibility Guardian), който проверява сайта ви по WCAG 2.2 AA с axe-core направо от админ панела: оценка, подредени проблеми с конкретни поправки, автоматични поправки по избор и експорт в CSV/JSON.",
@@ -18,6 +23,11 @@
 		"order": 2,
 		"group": "featured",
 		"icon": "trophy",
+		"image": "assets/img/projects/scorelive.webp",
+		"image_alt": {
+			"bg": "Началната страница на ScoreLive: логото и „Турнири за организатори, състезатели и фенове“ с бутони за организиране и следене на турнири.",
+			"en": "The ScoreLive home page: the logo and the tagline “Tournaments for organizers, competitors and fans” with buttons to organize and follow tournaments."
+		},
 		"name": { "bg": "ScoreLive", "en": "ScoreLive" },
 		"description": {
 			"bg": "Платформа с отворен код за турнири: групи, елиминации, лиги и швейцарска система с класиране на живо. На български и английски, с цел ниво на достъпност WCAG AAA.",
@@ -30,6 +40,11 @@
 		"order": 3,
 		"group": "featured",
 		"icon": "theme",
+		"image": "assets/img/projects/uspeh-filter-theme.webp",
+		"image_alt": {
+			"bg": "Началната страница с темата: меню, заглавие „Производство на филтри за въздух, течности и газове“ и бутони за продуктите и за оферта.",
+			"en": "The home page with the theme: a menu, the heading “Manufacturing filters for air, liquids and gases” and buttons for products and a quote."
+		},
 		"name": { "bg": "Uspeh Filter Theme", "en": "Uspeh Filter Theme" },
 		"description": {
 			"bg": "WordPress тема за uspehfilter.com – български производител на въздушни, HEPA, моторни и индустриални филтри. Готова за Gutenberg, със 100 точки в Lighthouse за достъпност, добри практики и SEO.",
@@ -43,6 +58,11 @@
 		"order": 4,
 		"group": "featured",
 		"icon": "radio",
+		"image": "assets/img/projects/folkradionazdrave.webp",
+		"image_alt": {
+			"bg": "Плейърът на тъмен фон: „Поп-фолк и народна музика. На живо, денонощно.“, двете станции и бутон „Слушай на живо“.",
+			"en": "The player on a dark background: the headline “Pop-folk and folk music. Live, around the clock.”, the two stations and a “Listen live” button."
+		},
 		"name": { "bg": "Фолк радио Наздраве", "en": "Folk Radio Nazdrave" },
 		"description": {
 			"bg": "Уеб плейър на живо за Фолк радио Наздраве и Gold Radio – попфолк, фолк и балканска музика 24/7 – с панел за достъпност, управление от клавиатурата и автоматични проверки за достъпност.",

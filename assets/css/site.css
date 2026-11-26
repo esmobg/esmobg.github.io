@@ -1508,22 +1508,34 @@ tbody tr:last-child td {
 	color: var(--accent-soft-text);
 }
 
-/* A project's own logo sits on white, so dark lettering stays legible in dark mode too. */
-.project__logo {
-	display: grid;
-	place-items: center;
-	margin: 0 0 1rem;
-	padding: 1rem;
+/* Preview image: a screenshot or a generated cover, edge to edge under the top border. */
+.project__media {
+	margin: -1.5rem -1.5rem 1.25rem;
+	overflow: hidden;
+	/* Follows the card's inner corners (1px side border, 4px top border). */
+	border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0 / calc(var(--radius) - 4px) calc(var(--radius) - 4px) 0 0;
+	border-bottom: 1px solid var(--border);
+	background: var(--surface);
+	aspect-ratio: 16 / 10;
+}
+
+.project__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: top center;
+}
+
+/* A project's own logo replaces the icon. It sits on white, so it stays legible in dark mode too. */
+.project__icon--logo {
 	border: 1px solid var(--border);
-	border-radius: var(--radius-sm);
 	background: #ffffff;
 }
 
-.project__logo img {
-	width: auto;
-	max-width: 100%;
-	height: auto;
-	max-height: 120px;
+.project__icon--logo img {
+	width: 36px;
+	height: 36px;
 }
 
 .project__desc {
@@ -1677,6 +1689,10 @@ tbody tr:last-child td {
 }
 
 @media (forced-colors: active) {
+	.project__media {
+		border-bottom: 1px solid CanvasText;
+	}
+
 	.project,
 	.archive li,
 	.button-sm,

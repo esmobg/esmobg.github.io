@@ -62,12 +62,104 @@ def inline_svg(name: str, css_class: str) -> str:
     return svg.replace("<svg ", f'<svg class="{css_class}" aria-hidden="true" focusable="false" ', 1)
 
 
-def png_size(path: str) -> tuple[int, int]:
-    """Width and height of a PNG in the repository, read from its header."""
-    header = (ROOT / path).read_bytes()[:24]
-    if header[:8] != b"\x89PNG\r\n\x1a\n":
-        sys.exit(f"{path} is not a PNG")
-    return struct.unpack(">II", header[16:24])
+def image_size(path: str) -> tuple[int, int]:
+    """Width and height of a PNG or WebP image in the repository, read from its header."""
+    data = (ROOT / path).read_bytes()[:30]
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        return struct.unpack(">II", data[16:24])
+    if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        chunk = data[12:16]
+        if chunk == b"VP8X":
+            return 1 + int.from_bytes(data[24:27], "little"), 1 + int.from_bytes(data[27:30], "little")
+        if chunk == b"VP8 ":
+            width, height = struct.unpack("<HH", data[26:30])
+            return width & 0x3FFF, height & 0x3FFF
+        if chunk == b"VP8L":
+            bits = int.from_bytes(data[21:25], "little")
+            return 1 + (bits & 0x3FFF), 1 + ((bits >> 14) & 0x3FFF)
+    sys.exit(f"{path} is not a PNG or WebP image")
+
+
+# Generated cover for a project without a preview image: the site's hero gradient, the project
+# icon and name. 800x500 (16:10), the same size as the screenshots. Decorative (alt="").
+COVER = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#0d1b4d"/><stop offset="1" stop-color="#1d3fae"/></linearGradient>
+<radialGradient id="glow" cx="{gx}" cy="-0.1" r="0.8"><stop offset="0" stop-color="#2356eb" stop-opacity="0.55"/><stop offset="1" stop-color="#2356eb" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="800" height="500" fill="url(#bg)"/>
+<rect width="800" height="500" fill="url(#glow)"/>
+<g fill="none" stroke="#c9d8ff" stroke-opacity="0.22" stroke-width="2">
+<circle cx="{ox}" cy="{oy}" r="150"/><circle cx="{ox}" cy="{oy}" r="230" stroke-dasharray="6 12"/><circle cx="{ox}" cy="{oy}" r="310"/>
+</g>
+<rect x="64" y="{tile_y}" width="120" height="120" rx="34" fill="#ffffff"/>
+<svg x="88" y="{icon_y}" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#2356eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" color="#2356eb">{icon}</svg>
+<g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" fill="#ffffff">
+{title}
+<text x="64" y="436" font-size="26" font-weight="600" fill="#d3defa">{tags}</text>
+</g>
+</svg>
+"""
+
+
+def wrap(text: str, width: int) -> list[str]:
+    """Split text into lines of at most `width` characters (long repository names break after "-" or "_")."""
+    words = []
+    for word in text.split():
+        while len(word) > width:
+            cut = max(word.rfind("-", 0, width), word.rfind("_", 0, width)) + 1 or width
+            words.append(word[:cut])
+            word = word[cut:]
+        words.append(word)
+    lines: list[str] = []
+    for word in words:
+        if lines and len(lines[-1]) + 1 + len(word) <= width:
+            lines[-1] += " " + word
+        else:
+            lines.append(word)
+    return lines
+
+
+def tag_line(tags: list[str], limit: int = 44) -> str:
+    """As many tags as fit on one line of the cover."""
+    line = ""
+    for tag in tags[:4]:
+        candidate = f"{line} · {tag}" if line else tag
+        if len(candidate) > limit:
+            break
+        line = candidate
+    return line
+
+
+def write_cover(project: dict, lang: str, path: Path) -> None:
+    name = localized(project["name"], lang)
+    seed = sum(map(ord, project["repo"]))
+    lines = wrap(name, 22)
+    size = 56 if len(lines) <= 2 and max(map(len, lines)) <= 22 else 40
+    if size == 40:
+        lines = wrap(name, 30)
+        lines = lines[:2] + [lines[2] + ("…" if len(lines) > 3 else "")] if len(lines) > 2 else lines
+    top = 330 - (len(lines) - 1) * size * 1.1
+    title = "\n".join(
+        f'<text x="64" y="{top + i * size * 1.1:.0f}" font-size="{size}" font-weight="800" letter-spacing="-1">{esc(line)}</text>'
+        for i, line in enumerate(lines)
+    )
+    tile_y = round(top - size - 150)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        COVER.format(
+            gx=0.55 + (seed % 5) * 0.1,
+            ox=560 + (seed % 7) * 25,
+            oy=120 + (seed % 3) * 60,
+            tile_y=tile_y,
+            icon_y=tile_y + 24,
+            icon=ICONS.get(project["icon"], ICONS["code"]),
+            title=title,
+            tags=esc(tag_line(project["tags"])),
+        ),
+        encoding="utf-8",
+        newline="\n",
+    )
 
 
 def esc(value: object) -> str:
@@ -146,6 +238,8 @@ def collect(repos: list[dict], overrides: dict) -> list[dict]:
                 "tags": list(dict.fromkeys(tags))[:5],
                 "icon": meta.get("icon") or "code",
                 "logo": meta.get("logo") or "",
+                "image": meta.get("image") or "",
+                "image_alt": meta.get("image_alt") or "",
                 "live": meta.get("live") or (repo.get("homepage") or "").strip(),
                 "live_label": meta.get("live_label", "live"),
                 "status": status,
@@ -190,17 +284,32 @@ def render_card(project: dict, lang: str, t: dict) -> str:
         f'<span class="visually-hidden"> {esc(code_suffix)}</span></a>'
     )
 
+    # Every card has a picture: a screenshot (from data/projects.json, described by its alt
+    # text) or a generated cover (decorative: it only repeats the name, icon and tags).
+    image = localized(project["image"], lang)
+    if image:
+        width, height = image_size(image)
+        src, alt = image, localized(project["image_alt"], lang)
+        if not alt:
+            sys.exit(f"{project['repo']}: an image needs image_alt in both languages")
+    else:
+        width, height = 800, 500
+        src, alt = f"assets/img/projects/covers/{slug}-{lang}.svg", ""
+    media = f"""
+							<div class="project__media"><img src="/{esc(src)}" width="{width // 2}" height="{height // 2}" alt="{esc(alt)}"{lang_attr(alt, lang)} loading="lazy" decoding="async"></div>"""
+
     # A project's own logo replaces the generic icon. PNGs are made for 2x screens.
-    logo = ""
-    icon = f'<span class="project__icon">{icon_svg(project["icon"])}</span>'
     if project["logo"]:
-        width, height = png_size(project["logo"])
-        logo = f'''
-							<div class="project__logo"><img src="/{esc(project["logo"])}" width="{width // 2}" height="{height // 2}" alt="" loading="lazy"></div>'''
-        icon = ""
+        width, height = image_size(project["logo"])
+        icon = (
+            f'<span class="project__icon project__icon--logo"><img src="/{esc(project["logo"])}" '
+            f'width="{width // 4}" height="{height // 4}" alt="" loading="lazy" decoding="async"></span>'
+        )
+    else:
+        icon = f'<span class="project__icon">{icon_svg(project["icon"])}</span>'
 
     return f"""<li>
-						<article class="project" aria-labelledby="project-{slug}">{logo}
+						<article class="project" aria-labelledby="project-{slug}">{media}
 							<div class="project__head">
 								{icon}<h3 id="project-{slug}"{name_lang}>{esc(name)}</h3>
 							</div>
@@ -381,6 +490,12 @@ def main() -> None:
         out = ROOT / out
     shutil.rmtree(out, ignore_errors=True)
     shutil.copytree(ROOT / "assets", out / "assets")
+
+    for project in projects:
+        if project["group"] == "featured" and not project["image"]:
+            slug = re.sub(r"[^a-z0-9]+", "-", project["repo"].lower()).strip("-")
+            for lang in LANGS:
+                write_cover(project, lang, out / "assets" / "img" / "projects" / "covers" / f"{slug}-{lang}.svg")
 
     template = (ROOT / "templates" / "page.html").read_text(encoding="utf-8")
     today = dt.datetime.now(dt.timezone.utc).date().isoformat()
